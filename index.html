@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Уитстон шифры — модельдеу және криптоталдау</title>
+<meta name="theme-color" content="#050b18">
+<meta name="description" content="Уитстонның қосарланған квадрат шифрын модельдеу және криптоталдау">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Уитстон шифры">
+
+<style>
+:root{color-scheme:dark;--bg:#050b18;--card:#0b1630;--line:#1d3a63;--c1:#22d3ee;--c2:#fbbf24;--tx:#e6f1ff;--mut:#8aa4c8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#0d2a55,transparent),var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px;background:#050b18cc;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav a{color:var(--mut);text-decoration:none;padding:6px 14px;border-radius:20px;font-size:14px}nav a:hover{color:var(--c1);background:#0e2a4d}
+.hero{position:relative;min-height:calc(100vh - 56px);min-height:calc(100svh - 56px);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%}
+.hero .t{position:relative;z-index:2;padding:20px;max-width:760px;pointer-events:none}
+.hero .t *{pointer-events:auto}
+.tag{display:inline-block;border:1px solid var(--c1);color:var(--c1);padding:3px 14px;border-radius:20px;font-size:13px;letter-spacing:.1em;margin-bottom:14px;background:#06182acc}
+h1{font-size:clamp(28px,6vw,58px);line-height:1.1;margin:0 0 12px;background:linear-gradient(90deg,var(--c1),#fff 50%,var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px #22d3ee33}
+.hero p{color:var(--mut);font-size:clamp(15px,2.4vw,19px);margin:0 auto 22px;text-shadow:0 2px 10px #000}
+.btn{display:inline-block;border:0;cursor:pointer;font:600 15px inherit;font-family:inherit;padding:11px 22px;border-radius:12px;color:#031018;background:linear-gradient(135deg,var(--c1),#67e8f9);text-decoration:none;margin:4px;box-shadow:0 0 22px #22d3ee44}
+.btn.b{background:linear-gradient(135deg,var(--c2),#fde68a);box-shadow:0 0 22px #fbbf2444}.btn.g{background:#0e2a4d;color:var(--tx);box-shadow:none;border:1px solid var(--line)}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}.stats span{background:#0b1630cc;border:1px solid var(--line);padding:6px 14px;border-radius:12px;font-size:13px;color:var(--mut)}.stats b{color:var(--c2)}
+section{max-width:1000px;margin:0 auto;padding:54px 16px}
+h2{font-size:clamp(22px,4vw,32px);margin:0 0 6px}h2+.s{color:var(--mut);margin:0 0 22px}
+.card{background:linear-gradient(160deg,#0d1c3c,var(--card));border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+input,textarea,select{width:100%;background:#050d20;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-family:ui-monospace,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}
+textarea{min-height:76px;resize:vertical}input:focus,textarea:focus,select:focus{outline:2px solid var(--c1)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:640px){.row{grid-template-columns:1fr}}
+.sqs{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:640px){.sqs{grid-template-columns:1fr}}
+.sq{display:grid;gap:3px}.sq i{font-style:normal;text-align:center;padding:6px 0;border-radius:6px;background:#0a1a38;font:600 14px ui-monospace,Consolas,monospace;transition:.2s}
+.sqL i{color:var(--c1)}.sqR i{color:var(--c2)}.sq i.h{background:var(--c1);color:#031018;transform:scale(1.12);box-shadow:0 0 12px var(--c1)}.sqR i.h{background:var(--c2);box-shadow:0 0 12px var(--c2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{background:#0a1a38;border:1px solid var(--line);border-radius:8px;padding:3px 9px;font:13px ui-monospace,monospace;cursor:pointer;color:var(--tx)}.chip:hover,.chip.on{border-color:var(--c2);color:var(--c2)}
+.out{font:600 18px ui-monospace,Consolas,monospace;letter-spacing:.12em;word-break:break-all;color:var(--c2);background:#050d20;border:1px dashed var(--line);border-radius:10px;padding:12px;min-height:50px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:120px;overflow-x:auto;padding-bottom:2px}.bar{flex:1 0 14px;background:linear-gradient(var(--c1),#0e7490);border-radius:3px 3px 0 0;position:relative;min-height:2px}.bar em{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font:11px monospace;color:var(--mut);font-style:normal}
+.res{border-left:3px solid var(--line);padding:8px 12px;margin:8px 0;background:#050d20;border-radius:0 10px 10px 0;font-family:ui-monospace,monospace;font-size:14px;word-break:break-all}.res.top{border-color:var(--c2)}.res b{color:var(--c1)}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.g3 .card{margin:0}.g3 h3{margin:0 0 6px;color:var(--c1);font-size:17px}.g3 p{margin:0;color:var(--mut);font-size:14px}
+.m{color:var(--mut);font-size:13px}footer{text-align:center;color:var(--mut);padding:30px;font-size:13px;border-top:1px solid var(--line)}
+</style></head><body>
+<nav><a href="#home">Басты бет</a><a href="#model">Модельдеу</a><a href="#attack">Криптоталдау</a></nav>
+
+<div class="hero" id="home"><canvas id="gl"></canvas>
+<div class="t"><span class="tag">КРИПТОГРАФИЯ · КРИПТОТАЛДАУ</span>
+<h1>Уитстонның қосарланған квадрат шифры</h1>
+<p>Бағдарламалық модельдеу және криптоталдау: екі кілттік квадрат арқылы биграммаларды шифрлау және талдау</p>
+<a class="btn" href="#model">Шифрлау</a><a class="btn b" href="#attack">Криптоталдау</a>
+<div class="stats"><span><b>2</b> квадрат</span><span><b>42</b> әріп (қаз.)</span><span>кілт кеңістігі ≈ <b id="ks">10^102</b></span></div></div></div>
+
+<section id="model"><h2>Модельдеу: шифрлау және дешифрлау</h2><p class="s">Екі кілт сөзден квадрат құрылады; мәтін әріп жұптарына (биграммаларға) бөлінеді.</p>
+<div class="card"><div class="row"><div><label>Тіл / алфавит</label><select id="lang"><option value="kk">Қазақша (6×7, 42 әріп)</option><option value="en">English (5×5, I=J)</option></select></div><div></div></div>
+<div class="row"><div><label>1-кілт (сол жақ квадрат)</label><input id="k1"></div><div><label>2-кілт (оң жақ квадрат)</label><input id="k2"></div></div>
+<label>Мәтін</label><textarea id="inp"></textarea>
+<div style="margin-top:10px"><button class="btn" id="be">Шифрлау</button><button class="btn b" id="bd">Дешифрлау</button><button class="btn g" id="bs">Талдауға жіберу ↓</button></div></div>
+<div class="card"><label>Нәтиже (жұптармен)</label><div class="out" id="out"></div>
+<div class="sqs" style="margin-top:14px"><div><div class="m">Сол квадрат</div><div class="sq sqL" id="sl"></div></div><div><div class="m">Оң квадрат</div><div class="sq sqR" id="sr"></div></div></div>
+<label>Қадамдар (жұпты басыңыз — квадраттарда көрінеді)</label><div class="chips" id="steps"></div></div></section>
+
+<section id="attack"><h2>Криптоталдау</h2><p class="s">Жиіліктік талдау, индекс сәйкестігі және кілт сөздер сөздігі бойынша шабуыл (white-box: сөздік + бөлек «crib» сөз).</p>
+<div class="card"><label>Шифрмәтін</label><textarea id="ct"></textarea>
+<div class="row"><div><label>Күдікті сөз (crib, міндетті емес)</label><input id="crib"></div><div><label>Кілт сөздер сөздігі (үтірмен)</label><input id="words"></div></div>
+<div style="margin-top:10px"><button class="btn" id="ba">Шабуылды бастау</button></div></div>
+<div class="card"><div class="m">Әріптер жиілігі · сәйкестік индексі IC = <b id="ic" style="color:var(--c2)">–</b> · кілт кеңістігі ≈ <b id="ks2" style="color:var(--c2)">–</b></div><div class="bars" id="bars" style="margin:12px 0 24px"></div>
+<div class="m" id="rinfo"></div><div id="res"></div></div></section>
+
+<footer>Уитстонның қосарланған квадрат шифры · оқу модельдеу жобасы</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const AB={kk:{ab:"АӘБВГҒДЕЁЖЗИЙКҚЛМНҢОӨПРСТУҰҮФХҺЦЧШЩЪЫІЬЭЮЯ",r:6,c:7,pad:"Х",freq:"АЕНРІДЫТЛҚМСУОБҒЗКГҮЙШЖҢЯӨҰЭӘПҺХЦЧЮВЩФЬЪИЁ"},en:{ab:"ABCDEFGHIKLMNOPQRSTUVWXYZ",r:5,c:5,pad:"X",freq:"ETAOINSHRDLUCMFWYPVBGKQXZ"}};
+const DEMO={kk:{k1:"КРИПТО",k2:"ҚАЗАҚСТАН",t:"АҚПАРАТТЫ ҚОРҒАУ ЖҮЙЕСІ",crib:"АҚПАРАТ",w:"КРИПТО, ҚАЗАҚСТАН, ШИФР, КІЛТ, ҚОРҒАУ, АҚПАРАТ, ЖҮЙЕ, ТҮРКІСТАН, ЯСАУИ, УИТСТОН, КВАДРАТ, ХАБАРЛАМА"},en:{k1:"CIPHER",k2:"WHEATSTONE",t:"INFORMATION SECURITY SYSTEM",crib:"SECURITY",w:"CIPHER, WHEATSTONE, SECURITY, KEYWORD, CRYPTO, SQUARE, PLAYFAIR, SECRET, MATRIX"}};
+const $=id=>document.getElementById(id);
+const A=()=>AB[$("lang").value];
+function norm(t,a){t=t.toUpperCase();if(a===AB.en)t=t.replace(/J/g,"I");return[...t].filter(c=>a.ab.includes(c)).join("")}
+function sq(key,a){const s=[];for(const c of norm(key,a)+a.ab)if(!s.includes(c))s.push(c);return s}
+function core(txt,k1,k2,dec,a){const L=sq(k1,a),R=sq(k2,a),C=a.c,pl={},pr={},r=i=>Math.floor(i/C),c=i=>i%C;
+L.forEach((h,i)=>pl[h]=i);R.forEach((h,i)=>pr[h]=i);let t=norm(txt,a);if(t.length%2)t+=a.pad;let out="",st=[];
+for(let i=0;i<t.length;i+=2){let ia,ib,ix,iy,o;
+if(!dec){ia=pl[t[i]];ib=pr[t[i+1]];ix=r(ia)*C+c(ib);iy=r(ib)*C+c(ia);o=R[ix]+L[iy]}
+else{ix=pr[t[i]];iy=pl[t[i+1]];ia=r(ix)*C+c(iy);ib=r(iy)*C+c(ix);o=L[ia]+R[ib]}
+out+=o;st.push({f:t[i]+t[i+1],o,L:[ia,iy],R:[ib,ix]})}
+return{out,st,L,R}}
+function drawSq(el,s,C,hl){el.style.gridTemplateColumns="repeat("+C+",1fr)";el.innerHTML=s.map((h,i)=>"<i"+(hl&&hl.includes(i)?' class="h"':"")+">"+h+"</i>").join("")}
+let cur=null,lastEnc="";
+function run(dec){const a=A();cur=core($("inp").value,$("k1").value,$("k2").value,dec,a);
+$("out").textContent=cur.out.match(/../g)?.join(" ")||"";if(!dec)lastEnc=cur.out;
+drawSq($("sl"),cur.L,a.c);drawSq($("sr"),cur.R,a.c);
+$("steps").innerHTML=cur.st.map((s,i)=>'<span class="chip" data-i="'+i+'">'+s.f+"→"+s.o+"</span>").join("")}
+$("steps").onclick=e=>{const i=e.target.dataset.i;if(i==null)return;const s=cur.st[i],a=A();
+document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.i==i));drawSq($("sl"),cur.L,a.c,s.L);drawSq($("sr"),cur.R,a.c,s.R)};
+function fill(){const d=DEMO[$("lang").value];$("k1").value=d.k1;$("k2").value=d.k2;$("inp").value=d.t;$("crib").value=d.crib;$("words").value=d.w;run(false);$("ct").value=lastEnc;analyze();ksz()}
+function lg10f(n){let s=0;for(let i=2;i<=n;i++)s+=Math.log10(i);return s}
+function ksz(){const n=A().ab.length,v=(2*lg10f(n)).toFixed(0);$("ks").textContent="10^"+v;$("ks2").textContent="10^"+v}
+function analyze(){const a=A(),t=norm($("ct").value,a),cnt={};for(const h of t)cnt[h]=(cnt[h]||0)+1;const N=t.length,mx=Math.max(1,...Object.values(cnt));
+$("bars").innerHTML=[...a.ab].filter(h=>cnt[h]).map(h=>'<div class="bar" style="height:'+(cnt[h]/mx*100)+'%"><em>'+h+"</em></div>").join("");
+let ic=0;if(N>1)for(const h in cnt)ic+=cnt[h]*(cnt[h]-1);$("ic").textContent=N>1?(ic/(N*(N-1))).toFixed(4):"–"}
+const score=(t,a)=>{let s=0;for(const h of t)s+=a.freq.length-a.freq.indexOf(h);return s/t.length};
+function attack(){const a=A(),ct=norm($("ct").value,a),crib=norm($("crib").value,a);analyze();
+const ks=[...new Set($("words").value.split(/[\s,;]+/).map(w=>norm(w,a)).filter(Boolean))].slice(0,60);
+if(ct.length<2||!ks.length){$("res").innerHTML="<p class=m>Шифрмәтін мен сөздікті толтырыңыз.</p>";return}
+const t0=performance.now(),rs=[];
+for(const x of ks)for(const y of ks){const p=core(ct,x,y,true,a).out;rs.push({x,y,p,s:score(p,a)+(crib&&p.includes(crib)?1000:0)})}
+rs.sort((u,v)=>v.s-u.s);const ms=(performance.now()-t0).toFixed(0);
+$("rinfo").textContent="Тексерілді: "+rs.length+" кілт жұбы, "+ms+" мс. Кездейсоқ мәтіннің орташа ұпайы ≈ "+((a.freq.length+1)/2).toFixed(1)+".";
+$("res").innerHTML=rs.slice(0,5).map((r,i)=>'<div class="res'+(i?"":" top")+'">'+(i+1)+". кілттер: <b>"+r.x+"</b> / <b>"+r.y+"</b> · ұпай "+r.s.toFixed(1)+"<br>"+r.p+"</div>").join("")}
+$("be").onclick=()=>run(false);$("bd").onclick=()=>run(true);
+$("bs").onclick=()=>{if(!lastEnc)run(false);$("ct").value=lastEnc;analyze();$("attack").scrollIntoView()};
+$("ba").onclick=attack;$("ct").oninput=analyze;$("lang").onchange=fill;fill();
+
+(function(){try{
+const cv=$("gl"),P=cv.parentElement,ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,100);cam.position.set(0,0,17);const g=new THREE.Group();sc.add(g);
+const a=AB.kk,SL=sq("КРИПТО",a),SR=sq("ҚАЗАҚСТАН",a),side=new THREE.MeshBasicMaterial({color:0x0e4a6b}),side2=new THREE.MeshBasicMaterial({color:0x7a5a0a}),box=new THREE.BoxGeometry(.9,.9,.3),tiles={L:[],R:[]};
+function tx(h,col){const c=document.createElement("canvas");c.width=c.height=64;const x=c.getContext("2d");x.fillStyle="#0a1a38";x.fillRect(0,0,64,64);x.strokeStyle=col;x.lineWidth=4;x.strokeRect(2,2,60,60);x.fillStyle=col;x.font="bold 36px sans-serif";x.textAlign="center";x.textBaseline="middle";x.fillText(h,32,35);return new THREE.CanvasTexture(c)}
+[[SL,"L","#22d3ee",side,-4.6,.38],[SR,"R","#fbbf24",side2,4.6,-.38]].forEach(([s,k,col,sd,ox,ry])=>{const q=new THREE.Group();q.position.x=ox;q.rotation.y=ry;g.add(q);
+s.forEach((h,i)=>{const m=new THREE.Mesh(box,[sd,sd,sd,sd,new THREE.MeshBasicMaterial({map:tx(h,col)}),sd]);m.position.set((i%7-3)*1.05,(2.5-Math.floor(i/7))*1.05,0);q.add(m);tiles[k].push(m)})});
+const pn=400,pp=new Float32Array(pn*3);for(let i=0;i<pn*3;i++)pp[i]=(Math.random()-.5)*40;const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(pp,3));
+const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x67e8f9,size:.06}));sc.add(pts);
+const lg=new THREE.BufferGeometry();lg.setAttribute("position",new THREE.BufferAttribute(new Float32Array(12),3));
+const l1=new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0xfbbf24}));sc.add(l1);
+let hi=[],tm=0,mx=0,my=0;
+function pick(){hi.forEach(m=>m.scale.set(1,1,1));const r1=Math.floor(Math.random()*6),r2=Math.floor(Math.random()*6),c1=Math.floor(Math.random()*7),c2=Math.floor(Math.random()*7);
+hi=[tiles.L[r1*7+c1],tiles.R[r2*7+c2],tiles.R[r1*7+c2],tiles.L[r2*7+c1]];hi.forEach(m=>m.scale.set(1.35,1.35,2))}pick();
+function rs(){const w=P.clientWidth,h=P.clientHeight;ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();g.scale.setScalar(Math.min(1,w/h/1.55)+.0001);g.position.y=w/h<1?2.6:0}
+rs();addEventListener("resize",rs);P.addEventListener("pointermove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+const v=[new THREE.Vector3(),new THREE.Vector3(),new THREE.Vector3(),new THREE.Vector3()],clk=new THREE.Clock();
+(function loop(){const t=clk.getElapsedTime();g.rotation.y+=((mx*.8+Math.sin(t*.4)*.25)-g.rotation.y)*.05;g.rotation.x+=((my*.5)-g.rotation.x)*.05;pts.rotation.y=t*.03;
+if(t-tm>2.4){tm=t;pick()}
+sc.updateMatrixWorld(true);hi.forEach((m,i)=>m.getWorldPosition(v[i]));
+const p=lg.attributes.position;[v[0],v[1],v[2],v[3]].forEach((q,i)=>p.setXYZ(i,q.x,q.y,q.z+.3));p.needsUpdate=true;
+ren.render(sc,cam);requestAnimationFrame(loop)})()
+}catch(e){console.warn("3D disabled",e)}})();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch((err) => {
+      console.warn("Service Worker тіркелмеді:", err);
+    });
+  });
+}
+</script>
+</body></html>

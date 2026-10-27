@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "Уитстон шифры — модельдеу және криптоталдау",
+  "short_name": "Уитстон шифры",
+  "description": "Уитстонның қосарланған квадрат шифрын модельдеу және криптоталдау",
+  "lang": "kk",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050b18",
+  "theme_color": "#050b18",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
